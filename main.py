@@ -2,44 +2,54 @@ from tkinter import *
 import os
 from tkinter import filedialog
 
-
-# Window
 root = Tk()
-root.geometry('500x600')
-root.title('Notepad')
 
 
-# Save file
-def save_file():
-    # asks if you want to save the location
-    open_file = filedialog.asksaveasfile(mode='w', defaultextension=".txt")
-    if open_file is None:
-        return
-    text = str(entry.get(1.0, END))
-    open_file.write(text)
-    open_file.close()
+class Notepad:
 
+    def __init__(self, master=None):
+        self.root = root
+        self.window()
+        self.button()
+        root.mainloop()
 
-def clear():
-    entry.delete(1.0, END)
+    def window(self):
+        self.root.geometry('500x600')
+        self.root.title('Notepad')
 
+    def button(self):
+        self.b1 = Button(self.root, text='save file', command=self.save_file)
+        self.b1.place(x=10, y=10)
+        self.b2 = Button(self.root, text='clear', command=self.clear)
+        self.b2.place(x=70, y=10)
+        self.b3 = Button(self.root, text='open file', command=self.open_file)
+        self.b3.place(x=120, y=10)
+        self.entry = Text(self.root, height=33, width=58, wrap=WORD)
+        self.entry.place(x=10, y=50)
 
-def open_file():
-    file=filedialog.askopenfile(defaultextension=".txt",
-                                filetypes=[("All Files", "*.*"),
-                                ("Text Documents", "*.txt")])
-    if file is not None:
-        content= file.read()
-    entry.insert(INSERT, content)
+    # Save file
+    def save_file(self):
+        # asks if you want to save the location
+        self.open_file = filedialog.asksaveasfile(
+            mode='w', defaultextension=".txt"
+            )
+        if self.open_file is None:
+            return
+        self.text = str(entry.get(1.0, END))
+        self.open_file.write(text)
+        self.open_file.close()
 
-b1 = Button(root, text='save file', command=save_file) 
-b1.place(x=10, y=10)   
-b2 = Button(root, text='clear', command=clear)  
-b2.place(x=70, y=10) 
-b3 = Button(root, text='open file', command=open_file)    
-b3.place(x=120, y=10)
+    def clear(self):
+        self.entry.delete(1.0, END)
 
-entry=Text(root, height=33, width=58, wrap=WORD)
-entry.place(x=10, y=50)
+    def open_file(self):
+        self.file = filedialog.askopenfile(
+            defaultextension=".txt",
+            filetypes=[("All Files", "*.*"), ("Text Documents", "*.txt")]
+            )
 
-root.mainloop()
+        if self.file is not None:
+            self.content= file.read()
+        self.entry.insert(INSERT, content)
+
+Notepad(root)
