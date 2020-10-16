@@ -93,13 +93,22 @@ class Notepad:
         self.entry.delete(1.0, END)
 
     def open_file(self):
-        self.file = filedialog.askopenfile(
+        # self.file = filedialog.askopenfile(
+        #     defaultextension=".txt",
+        #     filetypes=[("All Files", "*.*"), ("Text Documents", "*.txt")]
+        #     )
+        self.file = filedialog.askopenfilename(
             defaultextension=".txt",
             filetypes=[("All Files", "*.*"), ("Text Documents", "*.txt")]
             )
-        if self.file is not None:
-            self.content= self.file.read()
-        self.entry.insert(INSERT, self.content)
+        if self.file == "":
+            self.file = None
+        else:
+            self.root.title(os.path.basename(self.file))
+            self.entry.delete(1.0, END)
+            self.nfile = open(self.file, "r")
+            self.entry.insert(INSERT, self.nfile.read())
+            self.nfile.close()
 
     def quit_file(self):
         self.root.destroy()
