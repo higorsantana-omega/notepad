@@ -1,7 +1,6 @@
 from tkinter import *
 import os
 from tkinter import filedialog
-
 root = Tk()
 
 
@@ -15,13 +14,34 @@ class Notepad:
         self.button()
         root.mainloop()
 
-    def window(self):
-        self.root.geometry('500x600')
+    def window(self, **kwargs):
+        self.w_height = 460
+        self.w_width = 650
         self.root.title('Notepad')
+
+        try:
+            self.w_width = kwargs['width']
+        except KeyError:
+            pass
+
+        try:
+            self.w_width = kwargs['height']
+        except KeyError:
+            pass
+
+        self.screenWidht = self.root.winfo_screenmmwidth()
+        self.screenHeight = self.root.winfo_screenheight()
+        self.left = (self.screenWidht / 2) - (self.w_width / 2)
+        self.top = (self.screenHeight / 2) - (self.w_height / 2)
+
+        self.root.geometry('%dx%d+%d+%d' % (self.w_width,
+                                            self.w_height,
+                                            self.left, self.top))
 
     def button(self):
         self.filemenu = Menu(self.menubar)
         self.menubar.add_cascade(label='Arquivo', menu=self.filemenu)
+        self.filemenu.add_command(label='Novo', command=self.new_file)
         self.filemenu.add_command(label='Abrir...', command=self.open_file)
         self.filemenu.add_separator()
         self.filemenu.add_command(label='Salvar como', command=self.save_file)
@@ -37,8 +57,11 @@ class Notepad:
         self.editmenu.add_command(label='Limpar', command=self.clear)
 
 
-        self.entry = Text(self.root, height=33, width=58, wrap=WORD)
-        self.entry.place(x=10, y=50)
+        self.entry = Text(self.root, wrap=WORD)
+        self.root.grid_rowconfigure(0, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)
+
+        self.entry.grid(sticky = N + E + S + W)
 
 
     def cut(self):
@@ -48,6 +71,12 @@ class Notepad:
     def copy(self):
         self.entry.event_generate("<<Copy>>")
     
+    def new_file(self):
+        self.root.title('Sem nome')
+        self.file = None
+        self.entry.delete(1.0, END)
+        
+
     # Save file
     def save_file(self):
         # asks if you want to save the location
@@ -56,8 +85,8 @@ class Notepad:
             )
         if self.open_file is None:
             return
-        self.text = str(entry.get(1.0, END))
-        self.open_file.write(text)
+        self.text = str(self.entry.get(1.0, END))
+        self.open_file.write(self.text)
         self.open_file.close()
 
     def clear(self):
@@ -68,10 +97,9 @@ class Notepad:
             defaultextension=".txt",
             filetypes=[("All Files", "*.*"), ("Text Documents", "*.txt")]
             )
-
         if self.file is not None:
-            self.content= file.read()
-        self.entry.insert(INSERT, content)
+            self.content= self.file.read()
+        self.entry.insert(INSERT, self.content)
 
     def quit_file(self):
         self.root.destroy()
