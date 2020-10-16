@@ -80,14 +80,19 @@ class Notepad:
     # Save file
     def save_file(self):
         # asks if you want to save the location
-        self.open_file = filedialog.asksaveasfile(
-            mode='w', defaultextension=".txt"
+        self.file = filedialog.asksaveasfilename(
+            defaultextension=".txt",
+            filetypes=[("All Files", "*.*"), ("Text Documents", "*.txt")]
             )
-        if self.open_file is None:
-            return
-        self.text = str(self.entry.get(1.0, END))
-        self.open_file.write(self.text)
-        self.open_file.close()
+        if self.file == "":
+            self.file = None
+        else:
+            self.nfile = open(self.file, "w")
+            self.text = str(self.entry.get(1.0, END))
+            self.nfile.write(self.text)
+            self.nfile.close()
+            self.root.title(os.path.basename(self.file))
+    
 
     def clear(self):
         self.entry.delete(1.0, END)
