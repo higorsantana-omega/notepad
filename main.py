@@ -1,6 +1,7 @@
 from tkinter import *
 import os
 from tkinter import filedialog
+from tkinter import messagebox
 root = Tk()
 
 
@@ -41,12 +42,12 @@ class Notepad:
     def button(self):
         self.filemenu = Menu(self.menubar)
         self.menubar.add_cascade(label='Arquivo', menu=self.filemenu)
-        self.filemenu.add_command(label='Novo', command=self.new_file)
-        self.filemenu.add_command(label='Abrir...', command=self.open_file)
+        self.filemenu.add_command(label='Novo', command=self.new_file, accelerator="Ctrl+N")
+        self.filemenu.add_command(label='Abrir...', command=self.open_file, accelerator="Ctrl+O")
         self.filemenu.add_separator()
-        self.filemenu.add_command(label='Salvar como', command=self.save_file)
+        self.filemenu.add_command(label='Salvar como', command=self.save_file, accelerator="Ctrl+S")
         self.filemenu.add_separator()
-        self.filemenu.add_command(label='Sair', command=self.quit_file)
+        self.filemenu.add_command(label='Sair', command=self.quit_file, accelerator="Ctrl+Q")
 
         self.editmenu = Menu(self.menubar)
         self.menubar.add_cascade(label='Editar', menu=self.editmenu)
@@ -54,7 +55,11 @@ class Notepad:
         self.editmenu.add_command(label='Copiar', command=self.copy, accelerator="Ctrl+C")
         self.editmenu.add_command(label='Colar', command=self.paste, accelerator="Ctrl+V")
         self.editmenu.add_separator()
-        self.editmenu.add_command(label='Limpar', command=self.clear)
+        self.editmenu.add_command(label='Limpar', command=self.clear, accelerator="Ctrl+L")
+
+        self.helpmenu = Menu(self.menubar)
+        self.menubar.add_cascade(label='Ajuda', menu=self.helpmenu)
+        self.helpmenu.add_command(label='Sobre', command=self.about)
 
 
         self.entry = Text(self.root, wrap=WORD)
@@ -63,6 +68,10 @@ class Notepad:
 
         self.entry.grid(sticky = N + E + S + W)
 
+
+    def about(self):
+        self.msg = ('1.0.6' + '\nLeve editor de texto')
+        messagebox.showinfo(title='Sobre', message=self.msg)
 
     def cut(self):
         self.entry.event_generate("<<Cut>>")
@@ -76,7 +85,6 @@ class Notepad:
         self.file = None
         self.entry.delete(1.0, END)
         
-
     # Save file
     def save_file(self):
         # asks if you want to save the location
@@ -93,7 +101,6 @@ class Notepad:
             self.nfile.close()
             self.root.title(os.path.basename(self.file))
     
-
     def clear(self):
         self.entry.delete(1.0, END)
 
