@@ -1,6 +1,6 @@
 <div align="center">
 <img src=https://i.imgur.com/pduGgEc.png?1" >
-<p>Perfectly balanced</p>
+<p></p>
 </div>
 
 ## Visão geral
