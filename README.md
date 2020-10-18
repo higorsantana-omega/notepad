@@ -1,5 +1,7 @@
-<div align=”center”> [ https://i.imgur.com/pduGgEc.png?1 ]</div>
-
+<div align="center">
+<img src=https://i.imgur.com/pduGgEc.png?1" >
+<p>Perfectly balanced</p>
+</div>
 
 ## Visão geral
 Este é um editor de texto com funções básicas, feito em **Python 3.**
