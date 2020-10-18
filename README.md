@@ -1,4 +1,4 @@
-![enter image description here](https://i.imgur.com/pduGgEc.png?1)
+<div align=”center”> [ https://i.imgur.com/pduGgEc.png?1 ]</div>
 
 
 ## Visão geral
